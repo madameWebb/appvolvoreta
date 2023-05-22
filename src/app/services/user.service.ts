@@ -10,6 +10,7 @@ export class UserService{
     private urlLogin: string = 'http://localhost:30030/login';
     private urlEndpoint: string = 'http://localhost:30030/users';
     private header = new HttpHeaders ({'Content-Type': 'application/json'}); 
+    
     constructor(private http:HttpClient, private router: Router){}
     getUsers(): Observable<User[]>{
         return this.http.get(this.urlEndpoint.concat('/getAll')).pipe(
@@ -47,6 +48,9 @@ export class UserService{
                     console.error(exception.error.message);
                     return throwError(() => exception);
                 }
-            ));
+        ));
+    }
+    login(nif: string, password: string): Observable<User> {
+        return this.http.post<User>(this.urlLogin.concat("/login"), {headers: this.header, nif, password});
     }
 }
